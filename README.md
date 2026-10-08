@@ -12,3 +12,12 @@ i think readme just turned into dont readme
 - dolphin fille
 - i dunno i forgot
 
+## basic keybindings
+- super+shit+esc open umm keybind memu i think
+- super+enter terminal
+- super+D applauncher (how to type)
+- super+Q yes
+- super+something open something 
+- superman
+- sorry
+

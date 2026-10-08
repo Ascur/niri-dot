@@ -16,13 +16,13 @@ window {
   margin: 7px;
   border-radius: 0px;
   border: 1px solid #3b3b3b;
-  color: #e8e8d3;
+  color: #d8d8d8;
   background-color: rgba(26, 26, 26, 0.4);
   padding: 8px;
 }
 
 #input:focus {
-  border-color: #597bc5;
+  border-color: #b0b0b0;
 }
 
 #inner-box {
@@ -46,18 +46,22 @@ window {
   padding: 4px;
   border-radius: 0px;
   background-color: transparent;
+  transition: all 0.15s ease-in-out;
 }
 
 #entry:selected {
-  background-color: #3b3b3b;
+  background-color: #986a44;
   outline: none;
+  transform: scale(1.015);
 }
 
 #text {
   margin: 4px 8px;
-  color: #e8e8d3;
+  color: #d8d8d8;
 }
 
 #text:selected {
-  color: #e8e8d3;
+  color: #d8d8d8;
 }
+
+/* i hate this */

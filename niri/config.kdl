@@ -1,28 +1,39 @@
+// it just works
+
 // Startup Applications
 spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
-// spawn-at-startup "awww-daemon"
 spawn-at-startup "waybar"
-// spawn-at-startup "sh" "-c" "vicinae server &"
-spawn-at-startup "swaybg" "-i" "/home/ascur/Pictures/furs.jpg" "-m" "fill"
-spawn-at-startup "mako"
+
+
+
+// wallpaper
+spawn-at-startup "swaybg" "-i" "/home/ascur/Pictures/b.jpg" "-m" "fill"
+
+//Notification
+spawn-at-startup "swaync"
+
+//i dunno
 spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
-// General Settings
+
+
+// screen timeout
+spawn-at-startup "swayidle" "-w" \
+    "timeout" "300" "gtklock -d" \
+    "timeout" "360" "wlopm --off '*'" \
+    "resume" "wlopm --on '*'" \
+    "before-sleep" "gtklock -d"
+
+    // General Settings
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
-// Output setup
-
-output "HDMI-A-2" {
-    mode "1440x900@75"
-    scale 1
-}
-
-output "eDP-1" {
-    off
-}
+// Output setup auto detected i think
+// for screen screen config idk
+// https://hasnep.github.io/niri/wiki/configuration/outputs.html
 
 
+//keyboard layout
 input {
     keyboard {
         xkb {
@@ -59,11 +70,6 @@ overview {
     workspace-shadow {
         off
     }
-}
-
-layer-rule {
-    match namespace="^awww-daemon$"
-    place-within-backdrop true
 }
 
 
@@ -186,10 +192,9 @@ binds {
     // Layout Controls
     MOD+C                               { center-column; }
     MOD+CTRL+C                          { center-visible-columns; }
-    MOD+BRACKETLEFT                     { set-column-width "-10%"; }
-    MOD+BRACKETRIGHT                    { set-column-width "+10%"; }
-    MOD+SHIFT+BRACKETLEFT               { set-window-height "-10%"; }
-    MOD+SHIFT+BRACKETRIGHT              { set-window-height "+10%"; }
+    MOD+ALT+H                           { set-column-width "-10%"; }
+    MOD+ALT+L                           { set-column-width "+10%"; }
+
 
     // Window resizing with mouse
     MOD+CTRL+WHEELSCROLLDOWN            { set-window-height "-5%"; }
@@ -199,18 +204,16 @@ binds {
     MOD+T                               { toggle-window-floating; }
     MOD+F                               { fullscreen-window; }
     MOD+M                               { maximize-column; }
-    // MOD+W                               { toggle-column-tabbed-display; }
+    MOD+W                               { toggle-column-tabbed-display; }
 
     // Utils
     MOD+S                               { screenshot; }
     MOD+SHIFT+S                         { screenshot-screen write-to-disk=true; }
     MOD+CTRL+S                          { screenshot-window write-to-disk=true; }
-    MOD+P                               { spawn-sh "pgrep -x hyprpicker >/dev/null || hyprpicker"; }
 
     // Application Restarts
     MOD+ALT+W                           { spawn "sh" "-c" "pgrep -x waybar >/dev/null && killall waybar || waybar &"; }
-    // use with toggle in waybar (doens't restart if not running)
-    // MOD+ALT+W                           { spawn "killall" "-SIGUSR1" "waybar"; }
+
 }
 
 // Layout Settings
@@ -227,7 +230,7 @@ layout {
 
     focus-ring {
         width 1
-        active-color "#606060"
+        active-color "#b5835a"
     }
 
     insert-hint {
@@ -242,39 +245,51 @@ layout {
 // Animation Settings
 animations {
     workspace-switch {
-        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=600 epsilon=0.0001
     }
     window-open {
-        duration-ms 200
-        curve "ease-out-quad"
+        duration-ms 400
+        curve "ease-out-expo"
     }
     window-close {
         duration-ms 200
         curve "ease-out-cubic"
     }
     horizontal-view-movement {
-        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=500 epsilon=0.0001
     }
     window-movement {
-        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=455 epsilon=0.0001
     }
     window-resize {
         spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
     }
     config-notification-open-close {
-        spring damping-ratio=0.6 stiffness=1200 epsilon=0.001
+        spring damping-ratio=0.6 stiffness=700 epsilon=0.001
     }
     screenshot-ui-open {
         duration-ms 300
-        curve "ease-out-quad"
+        curve "ease-out-expo"
     }
     overview-open-close {
-        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=544 epsilon=0.0001
     }
 }
 
 // Window Rules
-// Application-specific rules
+// Application-specific rules ?what is this
+
+// Block out screencasts.
+window-rule {
+    match app-id=r#"org.kde.dolphin"#
+    match app-id=r#"org.gnome.Nautilus"#
+    match app-id=r#"blueman-manager"#
+    match app-id=r#"nm-connection-editor"#
+    match app-id=r#"org.telegram.desktop"#
+
+    block-out-from "screencast"
+}
+
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
@@ -313,10 +328,6 @@ window-rule {
     max-height 1000
 }
 
-window-rule {
-    match title=r#".*Sign in - Google Accounts — Mozilla Firefox"#
-    open-floating true
-}
 
 // System dialogs
 window-rule {
@@ -324,10 +335,7 @@ window-rule {
     open-floating true
 }
 
-window-rule {
-    match app-id=r#"zenity"#
-    open-floating true
-}
+
 
 // Authentication dialogs
 window-rule {
@@ -367,15 +375,10 @@ window-rule {
     open-floating true
 }
 
-// Steam dialogs
-window-rule {
-    match app-id=r#"steam"# title=r#".*(Friends|Settings|Properties).*"#
-    open-floating true
-}
 
 // Global window appearance
 window-rule {
-    geometry-corner-radius 1
+    geometry-corner-radius 0
     clip-to-geometry true
 
     opacity 1.0
@@ -388,12 +391,13 @@ window-rule {
 // Extra transparency for inactive windows (blur still applies)
 window-rule {
     match is-active=false
-    opacity 0.6
+    opacity 0.9
 }
 
-// Blur behind layer-shell surfaces too (waybar, wofi, mako, gtklock, etc.)
+// Blur behind layer-shell surfaces
 layer-rule {
     opacity 0.9
+     exclude namespace="^swaync"
 
     background-effect {
         blur true
@@ -408,7 +412,17 @@ layer-rule {
     }
 }
 
-// Environment Variables
+// Block out notifications from screencasts but why
+layer-rule {
+    match namespace="^swaync-notification-window$"
+    match namespace="^swaync-control-center$"
+
+    block-out-from "screencast"
+}
+
+
+
+// Environment Variables (i dunno if it works dont touch it)
 environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     XDG_SESSION_TYPE "wayland"

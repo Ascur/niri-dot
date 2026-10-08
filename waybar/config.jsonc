@@ -3,7 +3,7 @@
     "spacing": 4,
     "modules-left": ["niri/workspaces", "niri/window", "mpris"],
     "modules-center": [],
-    "modules-right": ["group/expandable-tray", "network", "bluetooth", "wireplumber", "battery", "niri/language", "clock", "custom/power"],
+    "modules-right": ["group/expandable-tray", "network", "bluetooth", "wireplumber", "battery", "niri/language",  "custom/notification", "clock", "custom/power"],
 
     "niri/workspaces": {
         "disable-scroll": true,
@@ -13,31 +13,24 @@
     },
 
     "mpris": {
-        "format": "󰎇 {artist} - {title}",
-        "format-paused": "󰏤 {artist} - {title}",
+        "format": " {artist} - {title}",
+        "format-paused": "PAUSED {artist} - {title}",
+        "max-length": 30,
         "interval": 1,
-        "tooltip": false,
-        "player-icons": {
-            "default": "󰎇",
-        },
-        "status-icons": {
-            "paused": "󰏤"
-        }
+        "tooltip": false
     },
 
-    "niri/language": {
-        "format": "󰌌 {short}"
-    },
-
-    "tray": {
-        "spacing": 10
+"niri/language": {
+        "format": "{}",
+        "format-en": "US  |",
+        "format-th": "TH  |"
     },
 
     "clock": {
         "interval": 1,
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": "󰥔 {:%H:%M:%S}",
-        "format-alt": "󰃰 {:%Y-%m-%d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt> |",
+        "format": "{:%H:%M:%S}  |",
+        "format-alt": "{:%Y-%m-%d}  |",
         "on-click-right": "gnome-calendar"
     },
 
@@ -47,55 +40,37 @@
     },
 
     "battery": {
-        "bat": "BAT0",
-        "adapter": "ADP0",
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-full": "󰚥 {capacity}%",
-        "format-icons": ["󰂎", "󰁺", "󰁼", "󰁿", "󰁹"]
-    },
+    "format": "BAT {capacity}%  |",
+    "format-charging": "PWR {capacity}%+"
+},
 
     "bluetooth": {
-        "format": "󰂯",
-        "format-connected": "󰂱",
-        "format-off": "󰂲",
+        "format": "BT  |",
+        "format-connected": "BT  |",
+        "format-off": "BT OFF  |",
         "tooltip-format-connected": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}",
-        "on-click": "bluetooth-manager"
+        "on-click": "blueman-manager"
     },
 
     "network": {
-        "format-wifi": "{icon}",
-        "format-disconnected": "󰤭",
-        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "format-wifi": "NET  |",
+        "format-disconnected": "NET OFF  |",
         "tooltip-format-wifi": "{essid} {signalStrength}%",
         "on-click": "nm-connection-editor"
     },
 
     "wireplumber": {
-        "format": "{icon} {volume}%",
-        "format-muted": "󰝟",
-        "format-icons": {
-            "default": ["󰕿", "󰖀", "󰕾"]
-        },
-        "on-click": "pavucontrol",
+        "format": "VOL {volume}%  |",
+        "format-muted": "MUTE  |",
+        "on-click": "pavucontrol"
     },
 
-    "custom/weather": {
-        "exec": "W=$(curl -sf \"wttr.in/Kyiv?format=%c%t\"|sed \"s/  / /\"); printf '{\"text\":\"%s\",\"tooltip\":\"Kyiv\"}' \"$W\"",
-        "return-type": "json",
-        "interval": 600,
-        "on-click": "foot --hold sh -c 'curl wttr.in/Kyiv'"
-    },
 
     "custom/power": {
-        "format": "󰐥",
-        "on-click": "foot --app-id=poweroff-confirm --window-size-chars=36x5 bash -c 'echo; echo \"  Shut down the system?\"; echo; read -p \"  [y/N] \" a; [ \"$a\" = y ] && systemctl poweroff'"
+        "format": "PWR  ",
+        "on-click": "~/.config/niri/scripts/power-menu.sh",
+        "tooltip": false
     },
     "group/expandable-tray": {
     "orientation": "horizontal",
@@ -119,5 +94,26 @@
 "tray": {
     "icon-size": 16,
     "spacing": 8
-}
+},
+
+  "custom/notification": {
+    "tooltip": true,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "NOTIF*  |",
+      "none": "NOTIF  |",
+      "dnd-notification": "DND  |",
+      "dnd-none": "DND  |",
+      "inhibited-notification": "DND  |",
+      "inhibited-none": "DND  |",
+      "dnd-inhibited-notification": "DND  |",
+      "dnd-inhibited-none": "DND  |"
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
 }

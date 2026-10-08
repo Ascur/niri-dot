@@ -279,16 +279,6 @@ animations {
 // Window Rules
 // Application-specific rules ?what is this
 
-// Block out screencasts.
-window-rule {
-    match app-id=r#"org.kde.dolphin"#
-    match app-id=r#"org.gnome.Nautilus"#
-    match app-id=r#"blueman-manager"#
-    match app-id=r#"nm-connection-editor"#
-    match app-id=r#"org.telegram.desktop"#
-
-    block-out-from "screencast"
-}
 
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
@@ -411,15 +401,6 @@ layer-rule {
         blur true
     }
 }
-
-// Block out notifications from screencasts but why
-layer-rule {
-    match namespace="^swaync-notification-window$"
-    match namespace="^swaync-control-center$"
-
-    block-out-from "screencast"
-}
-
 
 
 // Environment Variables (i dunno if it works dont touch it)

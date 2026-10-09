@@ -384,13 +384,13 @@ window-rule {
     opacity 0.9
 }
 
-// Blur behind layer-shell surfaces
+// Blur behind layer-shell surfaces change to true if u want blur (but i dont)
 layer-rule {
     opacity 0.9
      exclude namespace="^swaync"
 
     background-effect {
-        blur true
+        blur false
     }
 }
 
@@ -398,7 +398,7 @@ layer-rule {
     match namespace="^wofi$"
 
     background-effect {
-        blur true
+        blur false
     }
 }
 

@@ -17,7 +17,7 @@ i think readme just turned into dont readme
 - super+enter terminal
 - super+D applauncher (how to type)
 - super+Q yes
-- super+something open something 
+- super+something do something 
 - superman
 - sorry
 
